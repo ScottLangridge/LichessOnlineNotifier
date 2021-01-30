@@ -139,5 +139,5 @@ cython_debug/
 
 # My Additions
 config.py
-Users.json
+users.json
 .idea
