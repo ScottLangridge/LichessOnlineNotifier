@@ -9,9 +9,11 @@ scraper = LichessScraper()
 notifier = PushoverSender(config.pushover_user_key, config.pushover_api_key)
 users = UserBank(config.user_file_name)
 
+print('Running Lichess Online Notifier for the following users:')
+[print(f' - {user} ({users.get_nickname(user)})') for user in users.list_users()]
+
 while True:
     for user in users.list_users():
-        print(user)
         try:
             is_online = scraper.is_online(user)
             was_online = users.online(user)
