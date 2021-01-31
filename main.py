@@ -1,5 +1,7 @@
 import time
 
+import requests
+
 import config
 from Notifier import PushoverSender
 from Scraper import LichessScraper
@@ -11,6 +13,7 @@ users = UserBank(config.user_file_name)
 
 print('Running Lichess Online Notifier for the following users:')
 [print(f' - {user} ({users.get_nickname(user)})') for user in users.list_users()]
+print('')
 
 while True:
     for user in users.list_users():
@@ -23,8 +26,10 @@ while True:
                     nickname = users.get_nickname(user)
                     notifier.notify_user_online(nickname)
                 users.update_online(user, is_online)
-        except AssertionError:
-            pass
+        except (requests.exceptions.RequestException, AssertionError, ValueError) as e:
+            print('Error: ' + str(e))
+
+
         time.sleep(config.min_request_interval)
 
     time.sleep(config.refresh_interval)

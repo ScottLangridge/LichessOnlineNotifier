@@ -8,7 +8,7 @@ class LichessScraper:
 
     def fetch_profile(self, username):
         r = requests.get(self.base_url + username)
-        assert r.status_code == 200
+        assert r.status_code == 200, 'Lichess response code was not 200'
         return BeautifulSoup(r.content, 'html.parser')
 
     def is_online(self, username):
@@ -18,5 +18,5 @@ class LichessScraper:
         elif profile.find('h1', {'class': 'user-link offline'}):
             return False
         else:
-            raise AssertionError('Could not find h1 with class "user-link online" or "user-link offline".')
+            raise ValueError('Could not find h1 with class "user-link online" or "user-link offline".')
 
